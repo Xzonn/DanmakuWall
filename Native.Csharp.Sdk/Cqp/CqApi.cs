@@ -361,12 +361,14 @@ namespace Native.Csharp.Sdk.Cqp
 				return -1000;
 			}
 			UnPack unpack = new UnPack (Convert.FromBase64String (result));
-			qqInfo = new QQ ();
-			qqInfo.Id = unpack.GetInt64 ();
-			qqInfo.Nick = unpack.GetString (Encoding.GetEncoding ("GB18030"));
-			qqInfo.Sex = (Sex)unpack.GetInt32 ();
-			qqInfo.Age = unpack.GetInt32 ();
-			return 0;
+            qqInfo = new QQ
+            {
+                Id = unpack.GetInt64(),
+                Nick = unpack.GetString(Encoding.GetEncoding("GB18030")),
+                Sex = (Sex)unpack.GetInt32(),
+                Age = unpack.GetInt32()
+            };
+            return 0;
 		}
 		/// <summary>
 		/// 获取群成员信息
@@ -432,24 +434,26 @@ namespace Native.Csharp.Sdk.Cqp
 				}
 				#region --其它_转换_ansihex到群成员信息--
 				UnPack temp = new UnPack (unpack.GetToken ()); //解析群成员信息
-				GroupMember member = new GroupMember ();
-				member.GroupId = temp.GetInt64 ();
-				member.QQId = temp.GetInt64 ();
-				member.Nick = temp.GetString (Encoding.GetEncoding ("GB18030"));
-				member.Card = temp.GetString (Encoding.GetEncoding ("GB18030"));
-				member.Sex = (Sex)temp.GetInt32 ();
-				member.Age = temp.GetInt32 ();
-				member.Area = temp.GetString (Encoding.GetEncoding ("GB18030"));
-				member.JoiningTime = NativeConvert.FotmatUnixTime (temp.GetInt32 ().ToString ());
-				member.LastDateTime = NativeConvert.FotmatUnixTime (temp.GetInt32 ().ToString ());
-				member.Level = temp.GetString (Encoding.GetEncoding ("GB18030"));
-				member.PermitType = (PermitType)temp.GetInt32 ();
-				member.BadRecord = temp.GetInt32 () == 1;
-				member.SpecialTitle = temp.GetString (Encoding.GetEncoding ("GB18030"));
-				member.SpecialTitleDurationTime = NativeConvert.FotmatUnixTime (temp.GetInt32 ().ToString ());
-				member.CanModifiedCard = temp.GetInt32 () == 1;
-				#endregion
-				memberInfos.Add (member);
+                GroupMember member = new GroupMember
+                {
+                    GroupId = temp.GetInt64(),
+                    QQId = temp.GetInt64(),
+                    Nick = temp.GetString(Encoding.GetEncoding("GB18030")),
+                    Card = temp.GetString(Encoding.GetEncoding("GB18030")),
+                    Sex = (Sex)temp.GetInt32(),
+                    Age = temp.GetInt32(),
+                    Area = temp.GetString(Encoding.GetEncoding("GB18030")),
+                    JoiningTime = NativeConvert.FotmatUnixTime(temp.GetInt32().ToString()),
+                    LastDateTime = NativeConvert.FotmatUnixTime(temp.GetInt32().ToString()),
+                    Level = temp.GetString(Encoding.GetEncoding("GB18030")),
+                    PermitType = (PermitType)temp.GetInt32(),
+                    BadRecord = temp.GetInt32() == 1,
+                    SpecialTitle = temp.GetString(Encoding.GetEncoding("GB18030")),
+                    SpecialTitleDurationTime = NativeConvert.FotmatUnixTime(temp.GetInt32().ToString()),
+                    CanModifiedCard = temp.GetInt32() == 1
+                };
+                #endregion
+                memberInfos.Add (member);
 			}
 			#endregion
 			return 0;
@@ -479,10 +483,12 @@ namespace Native.Csharp.Sdk.Cqp
 				}
 				#region --其他_转换_ansihex到群信息--
 				UnPack temp = new UnPack (unpack.GetToken ());
-				Group group = new Group ();
-				group.Id = temp.GetInt64 ();
-				group.Name = temp.GetString (Encoding.GetEncoding ("GB18030"));
-				groups.Add (group);
+                Group group = new Group
+                {
+                    Id = temp.GetInt64(),
+                    Name = temp.GetString(Encoding.GetEncoding("GB18030"))
+                };
+                groups.Add (group);
 				#endregion
 			}
 			#endregion
@@ -712,11 +718,13 @@ namespace Native.Csharp.Sdk.Cqp
 		public GroupAnonymous GetAnonymous (string source)
 		{
 			UnPack unPack = new UnPack (Convert.FromBase64String (source));
-			GroupAnonymous anonymous = new GroupAnonymous ();
-			anonymous.Id = unPack.GetInt64 ();
-			anonymous.CodeName = unPack.GetString (Encoding.GetEncoding ("GB18030"));
-			anonymous.Token = unPack.GetToken ();
-			return anonymous;
+            GroupAnonymous anonymous = new GroupAnonymous
+            {
+                Id = unPack.GetInt64(),
+                CodeName = unPack.GetString(Encoding.GetEncoding("GB18030")),
+                Token = unPack.GetToken()
+            };
+            return anonymous;
 		}
 		/// <summary>
 		/// 获取群文件
@@ -726,12 +734,14 @@ namespace Native.Csharp.Sdk.Cqp
 		public GroupFile GetFile (string source)
 		{
 			UnPack unPack = new UnPack (Convert.FromBase64String (source));
-			GroupFile file = new GroupFile ();
-			file.Id = unPack.GetString (Encoding.GetEncoding ("GB18030"));
-			file.Name = unPack.GetString (Encoding.GetEncoding ("GB18030"));
-			file.Size = unPack.GetInt64 ();
-			file.Busid = Convert.ToInt32 (unPack.GetInt64 ());
-			return file;
+            GroupFile file = new GroupFile
+            {
+                Id = unPack.GetString(Encoding.GetEncoding("GB18030")),
+                Name = unPack.GetString(Encoding.GetEncoding("GB18030")),
+                Size = unPack.GetInt64(),
+                Busid = Convert.ToInt32(unPack.GetInt64())
+            };
+            return file;
 		}
 		/// <summary>
 		/// 编码悬浮窗数据置文本

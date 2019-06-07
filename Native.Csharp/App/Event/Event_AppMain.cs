@@ -61,7 +61,7 @@ namespace Native.Csharp.App.Event
 			// 在此分发已经注册的回调类型, 解析完毕后分发到导出的事件进行注册
 			// 下列代码演示如何将 IEvent_UserExpand 接口实例化并拿到对应的实例
 			IEvent_UserExpand userExpand = container.Resolve<IEvent_UserExpand> ();
-			UserExport.UserOpenConsole += userExpand.OpenConsoleWindow;
+			UserExport.UserOpenDanmakuWall += userExpand.OpenConsoleWindow;
 		}
 	}
 }

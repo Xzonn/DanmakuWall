@@ -31,5 +31,15 @@ namespace Native.Csharp.App
 		/// 获取或设置当前 App 使用的依赖注入容器实例
 		/// </summary>
 		public static IUnityContainer UnityContainer { get; set; }
-	}
+
+        /// <summary>
+        /// 弹幕墙
+        /// </summary>
+        public static DanmakuWall DanmakuWall;
+
+        /// <summary>
+        /// 用户设置
+        /// </summary>
+        public static Config Config;
+    }
 }

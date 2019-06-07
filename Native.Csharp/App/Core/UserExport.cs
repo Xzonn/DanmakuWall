@@ -26,14 +26,15 @@ namespace Native.Csharp.App.Core
 		/// <summary>
 		/// 用户打开控制台事件
 		/// </summary>
-		public static event EventHandler<EventArgs> UserOpenConsole = (sender, e) => { };
+		public static event EventHandler<EventArgs> UserOpenDanmakuWall = (sender, e) => { };
 		#endregion
 
 		#region --导出方法--
-		[DllExport (ExportName = "_eventOpenConsole", CallingConvention = CallingConvention.StdCall)]
-		private static int EventOpenConsole ()
+		[DllExport (ExportName = "_eventOpenDanmakuWall", CallingConvention = CallingConvention.StdCall)]
+		private static int EventOpenDanmakuWall()
 		{
-			UserOpenConsole (null, new EventArgs ());
+
+            UserOpenDanmakuWall(null, new EventArgs ());
 			return 0;
 		}
 		#endregion
