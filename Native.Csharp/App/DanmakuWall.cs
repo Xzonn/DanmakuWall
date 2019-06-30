@@ -131,39 +131,43 @@ namespace Native.Csharp.App
                 }
                 if (splitDanmaku[0] != "")
                     bitmaps.Add(StringToBitmap(Regex.Replace(splitDanmaku[0], CqPattern, ""), font));
+
+
+                int width = 0, height = 0;
+                if (bitmaps.Count == 0)
+                    return;
+                foreach (Bitmap wb in bitmaps)
+                {
+                    width += wb.Width;
+                    height = Math.Max(height, wb.Height);
+                }
+
+                Bitmap bitmap = new Bitmap(width, height);
+                Graphics g = Graphics.FromImage(bitmap);
+                int x = 0;
+                foreach (Bitmap wb in bitmaps)
+                {
+                    g.DrawImage(wb, new Point(x, (height - wb.Height) / 2));
+                    x += wb.Width;
+                }
+                g.Dispose();
+                Message message = new Message
+                {
+                    Text = danmaku,
+                    Time = DateTime.Now,
+                    Top = -1,
+                    Bitmap = bitmap,
+                    Speed = (bitmap.Width + Width) / 12.0
+                };
+                lock (messages)
+                {
+                    messages.Add(message);
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("出错了：" + ex.Message);
             }
-
-            int width = 0, height = 0;
-            if (bitmaps.Count == 0)
-                return;
-            foreach (Bitmap wb in bitmaps)
-            {
-                width += wb.Width;
-                height = Math.Max(height, wb.Height);
-            }
-
-            Bitmap bitmap = new Bitmap(width, height);
-            Graphics g = Graphics.FromImage(bitmap);
-            int x = 0;
-            foreach (Bitmap wb in bitmaps)
-            {
-                g.DrawImage(wb, new Point(x, (height - wb.Height) / 2));
-                x += wb.Width;
-            }
-            g.Dispose();
-            Message message = new Message
-            {
-                Text = danmaku,
-                Time = DateTime.Now,
-                Top = -1,
-                Bitmap = bitmap,
-                Speed = (bitmap.Width + Width) / 12.0
-            };
-            messages.Add(message);
         }
 
         /// <summary>
@@ -181,33 +185,36 @@ namespace Native.Csharp.App
 
             try
             {
-                foreach (Message message in messages)
+                lock (messages)
                 {
-                    if (message.Top == -1)
+                    foreach (Message message in messages)
                     {
-                        for (by = 0; by < Height; by++)
+                        if (message.Top == -1)
                         {
-                            if (drawed[by] == 0) break;
+                            for (by = 0; by < Height; by++)
+                            {
+                                if (drawed[by] == 0) break;
+                            }
+                            message.Top = by;
                         }
-                        message.Top = by;
-                    }
-                    int left = Width - (int)((DateTime.Now - message.Time).TotalSeconds * message.Speed);
-                    if (left + message.Bitmap.Width >= Width)
-                    {
-                        for (by = message.Top; by < Math.Min(Height, message.Top + message.Bitmap.Height); by++)
+                        int left = Width - (int)((DateTime.Now - message.Time).TotalSeconds * message.Speed);
+                        if (left + message.Bitmap.Width >= Width)
                         {
-                            drawed[by] = 1;
+                            for (by = message.Top; by < Math.Min(Height, message.Top + message.Bitmap.Height); by++)
+                            {
+                                drawed[by] = 1;
+                            }
                         }
+                        else if (left + message.Bitmap.Width <= 0)
+                        {
+                            remove.Add(message);
+                        }
+                        g.DrawImage(message.Bitmap, new Point(left, message.Top));
                     }
-                    else if (left + message.Bitmap.Width <= 0)
+                    foreach (Message removeMessage in remove)
                     {
-                        remove.Add(message);
+                        messages.Remove(removeMessage);
                     }
-                    g.DrawImage(message.Bitmap, new Point(left, message.Top));
-                }
-                foreach (Message removeMessage in remove)
-                {
-                    messages.Remove(removeMessage);
                 }
                 if (InvokeRequired)
                 {
@@ -261,7 +268,10 @@ namespace Native.Csharp.App
 
         public void ClearDanmaku()
         {
-            messages.Clear();
+            lock (messages)
+            {
+                messages.Clear();
+            }
         }
     }
 }

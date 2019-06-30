@@ -11,5 +11,7 @@
         public string BorderColor;
         public int BorderWidth;
         public string FacePath;
+        public string WelcomeString;
+        public double TimeSpan;
     }
 }

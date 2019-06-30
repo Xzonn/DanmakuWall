@@ -60,6 +60,7 @@
     <Compile Include="Cqp\Model\GroupFile.cs" />
     <Compile Include="Cqp\Model\GroupMember.cs" />
     <Compile Include="Cqp\Model\QQ.cs" />
+    <Compile Include="Cqp\Other\OtherExpand.cs" />
     <Compile Include="Cqp\Other\Pack.cs" />
     <Compile Include="Cqp\Other\UnPack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

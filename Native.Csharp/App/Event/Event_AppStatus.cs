@@ -46,7 +46,9 @@ namespace Native.Csharp.App.Event
                     Color = "#FFFFFF",
                     BorderColor = "#000000",
                     BorderWidth = 5,
-                    FacePath = "wxFace/48/"
+                    FacePath = "wxFace/48/",
+                    WelcomeString = "您好，我是弹幕墙！\n如果您想发送弹幕，只需向我发送消息！\n文字、表情、图片都是可以的，但是语音、文件是不会被显示的。\n当然，请不要给我发红包，我也无法领取。\n祝您玩的开心！",
+                    TimeSpan = 5.0
                 };
                 Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info, "提示", "配置文件不存在，已使用默认配置");
             }

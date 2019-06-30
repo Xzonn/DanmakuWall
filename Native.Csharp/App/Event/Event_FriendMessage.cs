@@ -12,6 +12,8 @@ namespace Native.Csharp.App.Event
 {
     public class Event_FriendMessage : IEvent_FriendMessage
     {
+        Dictionary<long, DateTime> danmakuSender = new Dictionary<long, DateTime>();
+
         #region --公开方法--
         /// <summary>
         /// Type=201 好友已添加<para/>
@@ -23,7 +25,7 @@ namespace Native.Csharp.App.Event
         {
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
-            Common.CqApi.SendPrivateMessage(e.FromQQ, "你好，我是弹幕墙！\n如果您想发送弹幕，只需向我发送消息！\n文字、表情、图片都是可以的，但是语音、文件是不会被显示的。\n当然，请不要给我发红包，我也无法领取。\n祝您玩的开心！");
+            Common.CqApi.SendPrivateMessage(e.FromQQ, Common.Config.WelcomeString);
             // Common.CqApi.SendPrivateMessage(Common.Config.Admin[0], $"已添加新的好友：{e.FromQQ}");
             Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info_Receive, "好友", $"已添加新的好友：{e.FromQQ}");
 
@@ -96,6 +98,23 @@ namespace Native.Csharp.App.Event
                 }
                 else
                 {
+                    if (danmakuSender.ContainsKey(e.FromQQ))
+                    {
+                        if ((DateTime.Now - danmakuSender[e.FromQQ]).TotalSeconds < Common.Config.TimeSpan)
+                        {
+                            Common.CqApi.SendPrivateMessage(e.FromQQ, $"您发送的频率过快，请 {Common.Config.TimeSpan} 秒后再发送。");
+                            e.Handled = true;
+                            return;
+                        }
+                        else
+                        {
+                            danmakuSender[e.FromQQ] = DateTime.Now;
+                        }
+                    }
+                    else
+                    {
+                        danmakuSender.Add(e.FromQQ, DateTime.Now);
+                    }
                     string message = e.Msg;
                     string ImagePattern = @"\[CQ:image,file=([A-F0-9]+\.(?:jpg|png|bmp|jpeg|gif)?)\]";
                     string ImagePathPattern = @"\[CQ:image,path=.+?\]";
