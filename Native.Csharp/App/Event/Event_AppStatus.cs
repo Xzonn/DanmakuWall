@@ -33,23 +33,11 @@ namespace Native.Csharp.App.Event
             try
             {
                 Common.Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path.Combine(Common.AppDirectory, "config.json"), Encoding.UTF8));
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info, "提示", "已载入配置文件");
             }
             catch
             {
-                Common.Config = new Config
-                {
-                    Admin = new long[0],
-                    FontFamily = "黑体",
-                    FontSize = 44,
-                    EmojiFontFamily = "Segoe UI Emoji",
-                    EmojiFontSize = 44,
-                    Color = "#FFFFFF",
-                    BorderColor = "#000000",
-                    BorderWidth = 5,
-                    FacePath = "wxFace/48/",
-                    WelcomeString = "您好，我是弹幕墙！\n如果您想发送弹幕，只需向我发送消息！\n文字、表情、图片都是可以的，但是语音、文件是不会被显示的。\n当然，请不要给我发红包，我也无法领取。\n祝您玩的开心！",
-                    TimeSpan = 5.0
-                };
+                Common.Config = new Config();
                 Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info, "提示", "配置文件不存在，已使用默认配置");
             }
 

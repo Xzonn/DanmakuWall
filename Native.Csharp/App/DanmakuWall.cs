@@ -72,7 +72,7 @@ namespace Native.Csharp.App
                                 break;
                             Bitmap subBitmap = (Bitmap)Image.FromFile(imagePath);
                             int sourWidth = subBitmap.Width, sourHeight = subBitmap.Height;
-                            int destWidth = 960, destHeight = 540, minWidth = 48, minHeight = 48;
+                            int destWidth = Common.Config.MaxImageWidth, destHeight = Common.Config.MaxImageHeight, minWidth = 48, minHeight = 48;
                             int subWidth, subHeight;
                             if (sourHeight > destHeight || sourWidth > destWidth)
                             {
