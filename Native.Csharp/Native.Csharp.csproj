@@ -100,6 +100,7 @@
     <Compile Include="App\DanmakuWall.Designer.cs">
       <DependentUpon>DanmakuWall.cs</DependentUpon>
     </Compile>
+    <Compile Include="App\HandleMessage.cs" />
     <Compile Include="App\Interface\IEvent_AppStatus.cs" />
     <Compile Include="App\Interface\IEvent_DiscussMessage.cs" />
     <Compile Include="App\Interface\IEvent_FriendMessage.cs" />
@@ -116,7 +117,14 @@
     <Compile Include="App\Model\GroupMemberAlterEventArgs.cs" />
     <Compile Include="App\Model\GroupMessageEventArgs.cs" />
     <Compile Include="App\Model\PrivateMessageEventArgs.cs" />
-    <Compile Include="App\Config.cs" />
+    <Compile Include="App\ConfigClass.cs" />
+    <Compile Include="App\Setting.cs" />
+    <Compile Include="App\SettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="App\SettingForm.Designer.cs">
+      <DependentUpon>SettingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -128,9 +136,13 @@
     <Compile Include="Repair\Enum\LoadLibraryFlags.cs" />
     <Compile Include="Repair\ModuleInitializer.cs" />
     <Compile Include="Repair\Helper\ReflectionHelper.cs" />
+    <Compile Include="App\Users.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.json" />
+    <EmbeddedResource Include="App\SettingForm.resx">
+      <DependentUpon>SettingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="config.json" />
     <None Include="io.github.xzonn.danmaku.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -8,8 +8,10 @@
     "BorderColor": "#000000", // 描边颜色
     "BorderWidth": 5, // 描边宽度
     "FacePath": "wxFace/48/", // 表情路径
-    "WelcomeString": "您好，我是弹幕墙！\n如果您想发送弹幕，只需向我发送消息！\n文字、表情、图片都是可以的，但是语音、文件是不会被显示的。\n当然，请不要给我发红包，我也无法领取。\n祝您玩的开心！", // 欢迎文字
+    "WelcomeString": "添加成功。您可以发送文字、表情或图片。", // 欢迎文字
     "TimeSpan": 0.5, // 时间间隔
+    "AllowImage": true, // 是否允许图片
     "MaxImageWidth": 960, // 图片最大宽度
-    "MaxImageHeight": 540 // 图片最大高度
+    "MaxImageHeight": 540, // 图片最大高度
+    "ShowName": true // 是否显示昵称
 }

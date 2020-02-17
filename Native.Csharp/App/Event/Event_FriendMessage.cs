@@ -12,7 +12,6 @@ namespace Native.Csharp.App.Event
 {
     public class Event_FriendMessage : IEvent_FriendMessage
     {
-        Dictionary<long, DateTime> danmakuSender = new Dictionary<long, DateTime>();
 
         #region --公开方法--
         /// <summary>
@@ -25,8 +24,8 @@ namespace Native.Csharp.App.Event
         {
             // 本子程序会在酷Q【线程】中被调用，请注意使用对象等需要初始化(CoInitialize,CoUninitialize)。
             // 这里处理消息
-            Common.CqApi.SendPrivateMessage(e.FromQQ, Common.Config.WelcomeString);
-            // Common.CqApi.SendPrivateMessage(Common.Config.Admin[0], $"已添加新的好友：{e.FromQQ}");
+            Common.CqApi.SendPrivateMessage(e.FromQQ, Common.ConfigLoader.Config.WelcomeString);
+            // Common.CqApi.SendPrivateMessage(Common.ConfigLoader.Config.Admin[0], $"已添加新的好友：{e.FromQQ}");
             Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info_Receive, "好友", $"已添加新的好友：{e.FromQQ}");
 
             e.Handled = true;   // 关于返回说明, 请参见 "Event_FriendMessage.ReceiveFriendMessage" 方法
@@ -58,78 +57,14 @@ namespace Native.Csharp.App.Event
             // 这里处理消息
             try
             {
-                if (e.Msg[0] == '#')
-                {
-                    if (Array.IndexOf(Common.Config.Admin, e.FromQQ) > -1)
-                    {
-                        string[] command = e.Msg.Substring(1).Split(' ');
-                        switch (command[0])
-                        {
-                            case "显示":
-                            case "关闭":
-                                if (Common.DanmakuWall.Visible)
-                                {
-                                    Common.DanmakuWall.Visible = false;
-                                    Common.CqApi.SendPrivateMessage(e.FromQQ, "已关闭弹幕墙。");
-                                }
-                                else
-                                {
-                                    Common.DanmakuWall.Visible = true;
-                                    Common.CqApi.SendPrivateMessage(e.FromQQ, "已显示弹幕墙。");
-                                }
-                                break;
-                            case "清屏":
-                                Common.DanmakuWall.ClearDanmaku();
-                                Common.CqApi.SendPrivateMessage(e.FromQQ, "已清屏。");
-                                break;
-                            case "帮助":
-                                Common.CqApi.SendPrivateMessage(e.FromQQ, "可选命令：[显示|关闭|清屏|帮助]。");
-                                break;
-                            default:
-                                Common.CqApi.SendPrivateMessage(e.FromQQ, "出错了：不存在此命令。");
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        Common.CqApi.SendPrivateMessage(e.FromQQ, "出错了：您不是管理员，请不要以 # 为开头发送消息。");
-                        Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info_Receive, "提示", $"{e.FromQQ} 正在尝试发送命令。");
-                    }
-                }
-                else
-                {
-                    if (danmakuSender.ContainsKey(e.FromQQ))
-                    {
-                        if ((DateTime.Now - danmakuSender[e.FromQQ]).TotalSeconds < Common.Config.TimeSpan)
-                        {
-                            Common.CqApi.SendPrivateMessage(e.FromQQ, $"您发送的频率过快，请 {Common.Config.TimeSpan} 秒后再发送。");
-                            e.Handled = true;
-                            return;
-                        }
-                        else
-                        {
-                            danmakuSender[e.FromQQ] = DateTime.Now;
-                        }
-                    }
-                    else
-                    {
-                        danmakuSender.Add(e.FromQQ, DateTime.Now);
-                    }
-                    string message = e.Msg;
-                    string ImagePattern = @"\[CQ:image,file=([A-F0-9]+\.(?:jpg|png|bmp|jpeg|gif)?)\]";
-                    string ImagePathPattern = @"\[CQ:image,path=.+?\]";
-                    message = Regex.Replace(message, ImagePattern, x => "[CQ:image,path=" + Common.CqApi.ReceiveImage(x.Groups[1].Value) + "]");
-                    if (message == "") return;
-                    Common.DanmakuWall.SendDanmaku(Common.CqApi.CqCode_UnTrope(message));
-                    message = Regex.Replace(message, ImagePathPattern, "<图片>");
-                    Common.CqApi.SendPrivateMessage(e.FromQQ, $"已收到弹幕：{message}");
-                }
-                e.Handled = true;
-                return;
+                if (e.Handled)
+                    return;
+                e.Handled = HandleMessage.ReceiveMessage(e.FromQQ, e.Msg);
             }
             catch (Exception ex)
             {
-                Common.CqApi.SendPrivateMessage(e.FromQQ, "出错了：" + ex.Message);
+                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Error, "错误", ex.Message);
+                e.Handled = false;
             }
             // e.Handled 相当于 原酷Q事件的返回值
             // 如果要回复消息，请调用api发送，并且置 true - 截断本条消息，不再继续处理 //注意：应用优先级设置为"最高"(10000)时，不得置 true

@@ -30,16 +30,9 @@ namespace Native.Csharp.App.Event
             // 返回如：D:\CoolQ\app\com.example.demo\
             // 应用的所有数据、配置【必须】存放于此目录，避免给用户带来困扰。
 
-            try
-            {
-                Common.Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path.Combine(Common.AppDirectory, "config.json"), Encoding.UTF8));
-                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info, "提示", "已载入配置文件");
-            }
-            catch
-            {
-                Common.Config = new Config();
-                Common.CqApi.AddLoger(Sdk.Cqp.Enum.LogerLevel.Info, "提示", "配置文件不存在，已使用默认配置");
-            }
+            Common.ConfigLoader = new ConfigLoader();
+            Common.ConfigLoader.Load();
+            Common.Users = new Users();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

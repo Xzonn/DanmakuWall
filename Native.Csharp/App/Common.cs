@@ -40,6 +40,7 @@ namespace Native.Csharp.App
         /// <summary>
         /// 用户设置
         /// </summary>
-        public static Config Config;
+        public static ConfigLoader ConfigLoader;
+        public static Users Users;
     }
 }

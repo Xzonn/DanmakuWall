@@ -16,9 +16,9 @@ namespace Native.Csharp.App
     public partial class DanmakuWall : Form
     {
         List<Message> messages = new List<Message>();
-        static Font font = new Font(Common.Config.FontFamily, Common.Config.FontSize, FontStyle.Bold, GraphicsUnit.Pixel), emojiFont = new Font(Common.Config.EmojiFontFamily, Common.Config.EmojiFontSize, FontStyle.Bold, GraphicsUnit.Pixel);
-        static SolidBrush fill = new SolidBrush(ColorTranslator.FromHtml(Common.Config.Color));
-        static Pen border = new Pen(new SolidBrush(ColorTranslator.FromHtml(Common.Config.BorderColor)), Common.Config.BorderWidth);
+        static Font font = new Font(Common.ConfigLoader.Config.FontFamily, Common.ConfigLoader.Config.FontSize, FontStyle.Bold, GraphicsUnit.Pixel), emojiFont = new Font(Common.ConfigLoader.Config.EmojiFontFamily, Common.ConfigLoader.Config.EmojiFontSize, FontStyle.Bold, GraphicsUnit.Pixel);
+        static SolidBrush fill = new SolidBrush(ColorTranslator.FromHtml(Common.ConfigLoader.Config.Color));
+        static Pen border = new Pen(new SolidBrush(ColorTranslator.FromHtml(Common.ConfigLoader.Config.BorderColor)), Common.ConfigLoader.Config.BorderWidth);
         Bitmap backgroundImage = new Bitmap(1, 1);
 
         /// <summary>
@@ -67,12 +67,14 @@ namespace Native.Csharp.App
                     switch (match.Groups[1].Value)
                     {
                         case "image":
+                            if (!Common.ConfigLoader.Config.AllowImage)
+                                continue;
                             string imagePath = match.Groups[2].Value;
                             if (!File.Exists(imagePath))
                                 break;
                             Bitmap subBitmap = (Bitmap)Image.FromFile(imagePath);
                             int sourWidth = subBitmap.Width, sourHeight = subBitmap.Height;
-                            int destWidth = Common.Config.MaxImageWidth, destHeight = Common.Config.MaxImageHeight, minWidth = 48, minHeight = 48;
+                            int destWidth = Common.ConfigLoader.Config.MaxImageWidth, destHeight = Common.ConfigLoader.Config.MaxImageHeight, minWidth = 48, minHeight = 48;
                             int subWidth, subHeight;
                             if (sourHeight > destHeight || sourWidth > destWidth)
                             {
@@ -118,7 +120,7 @@ namespace Native.Csharp.App
                             }
                             break;
                         case "face":
-                            string facePath = Path.Combine(Common.AppDirectory, Common.Config.FacePath, match.Groups[2].Value + ".png");
+                            string facePath = Path.Combine(Common.AppDirectory, Common.ConfigLoader.Config.FacePath, match.Groups[2].Value + ".png");
                             if (File.Exists(facePath))
                             {
                                 bitmaps.Add((Bitmap)Image.FromFile(facePath));
@@ -253,11 +255,11 @@ namespace Native.Csharp.App
         private Bitmap StringToBitmap(string s, Font font)
         {
             SizeF fontSize = TextRenderer.MeasureText(s, font);
-            Size size = new Size((int)(fontSize.Width), (int)(fontSize.Height + 2 * Common.Config.BorderWidth));
+            Size size = new Size((int)(fontSize.Width), (int)(fontSize.Height + 2 * Common.ConfigLoader.Config.BorderWidth));
             Bitmap bitmap = new Bitmap(size.Width, size.Height);
             Graphics g = Graphics.FromImage(bitmap);
             GraphicsPath path = new GraphicsPath();
-            path.AddString(s, font.FontFamily, (int)font.Style, font.Size, new Rectangle(Common.Config.BorderWidth, Common.Config.BorderWidth, size.Width, size.Height), StringFormat.GenericTypographic);
+            path.AddString(s, font.FontFamily, (int)font.Style, font.Size, new Rectangle(Common.ConfigLoader.Config.BorderWidth, Common.ConfigLoader.Config.BorderWidth, size.Width, size.Height), StringFormat.GenericTypographic);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.DrawPath(border, path);
             g.FillPath(fill, path);

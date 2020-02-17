@@ -17,6 +17,7 @@ using Native.Csharp.Sdk.Cqp;
 using Native.Csharp.Sdk.Cqp.Enum;
 using Native.Csharp.Tool;
 using Native.Csharp.Repair;
+using System.Windows.Forms;
 
 namespace Native.Csharp.App.Core
 {
@@ -569,6 +570,20 @@ namespace Native.Csharp.App.Core
                 Common.CqApi.AddLoger (LogerLevel.Info, "Native提示", "EventRequestAddGroup 方法发现新的消息类型");
             }
 
+            return 0;
+        }
+
+        [DllExport(ExportName = "_setting", CallingConvention = CallingConvention.StdCall)]
+        public static int Menu_setting()
+        {
+            Setting.Open();
+            return 0;
+        }
+
+        [DllExport(ExportName = "_about", CallingConvention = CallingConvention.StdCall)]
+        public static int Menu_about()
+        {
+            System.Diagnostics.Process.Start("https://xzonn.github.io/posts/Danmaku-Wall.html");
             return 0;
         }
         #endregion
