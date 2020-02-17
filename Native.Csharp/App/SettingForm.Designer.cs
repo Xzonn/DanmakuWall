@@ -49,13 +49,6 @@
             this.labelAdmin.Text = "管理员：";
             this.labelAdmin.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // textAdmin
-            // 
-            this.textAdmin.Location = new System.Drawing.Point(130, 10);
-            this.textAdmin.Name = "textAdmin";
-            this.textAdmin.Size = new System.Drawing.Size(240, 29);
-            this.textAdmin.TabIndex = 1;
-            // 
             // labelGroup
             // 
             this.labelGroup.Location = new System.Drawing.Point(10, 50);
@@ -66,30 +59,19 @@
             this.labelGroup.Text = "QQ群：";
             this.labelGroup.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // textAdmin
+            // 
+            this.textAdmin.Location = new System.Drawing.Point(130, 10);
+            this.textAdmin.Name = "textAdmin";
+            this.textAdmin.Size = new System.Drawing.Size(240, 29);
+            this.textAdmin.TabIndex = 1;
+            // 
             // textGroups
             // 
             this.textGroups.Location = new System.Drawing.Point(130, 50);
             this.textGroups.Name = "textGroups";
             this.textGroups.Size = new System.Drawing.Size(240, 29);
             this.textGroups.TabIndex = 3;
-            // 
-            // checkImage
-            // 
-            this.checkImage.Location = new System.Drawing.Point(130, 90);
-            this.checkImage.Name = "checkImage";
-            this.checkImage.Size = new System.Drawing.Size(120, 30);
-            this.checkImage.TabIndex = 4;
-            this.checkImage.Text = "显示图片";
-            this.checkImage.UseVisualStyleBackColor = true;
-            // 
-            // checkNick
-            // 
-            this.checkNick.Location = new System.Drawing.Point(130, 130);
-            this.checkNick.Name = "checkNick";
-            this.checkNick.Size = new System.Drawing.Size(120, 30);
-            this.checkNick.TabIndex = 5;
-            this.checkNick.Text = "显示昵称";
-            this.checkNick.UseVisualStyleBackColor = true;
             // 
             // buttonConfirm
             // 
@@ -112,8 +94,27 @@
             this.linkAbout.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkAbout.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.About);
             // 
+            // checkImage
+            // 
+            this.checkImage.Location = new System.Drawing.Point(130, 90);
+            this.checkImage.Name = "checkImage";
+            this.checkImage.Size = new System.Drawing.Size(120, 30);
+            this.checkImage.TabIndex = 4;
+            this.checkImage.Text = "显示图片";
+            this.checkImage.UseVisualStyleBackColor = true;
+            // 
+            // checkNick
+            // 
+            this.checkNick.Location = new System.Drawing.Point(130, 130);
+            this.checkNick.Name = "checkNick";
+            this.checkNick.Size = new System.Drawing.Size(120, 30);
+            this.checkNick.TabIndex = 5;
+            this.checkNick.Text = "显示昵称";
+            this.checkNick.UseVisualStyleBackColor = true;
+            // 
             // SettingForm
             // 
+            this.AcceptButton = this.buttonConfirm;
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(380, 250);
@@ -126,8 +127,11 @@
             this.Controls.Add(this.textAdmin);
             this.Controls.Add(this.labelAdmin);
             this.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(5);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SettingForm";
             this.Text = "设置";
             this.ResumeLayout(false);

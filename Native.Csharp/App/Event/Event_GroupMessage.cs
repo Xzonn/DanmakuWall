@@ -24,7 +24,7 @@ namespace Native.Csharp.App.Event
             // 这里处理消息
             try
             {
-                if (e.Handled)
+                if (e.Handled || !Common.ConfigLoader.Config.Groups.Contains(e.FromGroup))
                     return;
                 e.Handled = HandleMessage.ReceiveMessage(e.FromQQ, e.Msg, false);
             }
